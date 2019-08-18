@@ -1,9 +1,11 @@
 import speech_recognition as sr
 import os
-import pdb
-import time
-import glob
-
+import subprocess
+#import pdb #debug
+#import time
+#import glob #alternativní výpis souborů
+import ts3
+import params
 
 rec = sr.Recognizer()
 mic = sr.Microphone()
@@ -42,32 +44,65 @@ def program_start(program):
     print("František startuje " + program)
 
 
+#def ts3kick(user):
+#    os.system('ts3cli --host localhost --username loupo --password xzHjtnwP kick ' + user)
+#    legacy
+
+def ts3kick(client_name):
+    with ts3.query.TS3ServerConnection("localhost") as ts3conn:
+        try:
+            ts3conn.login(
+                        client_login_name="loupo",
+                        client_login_password="xzHjtnwP"
+            )
+        except ts3.query.TS3QueryError as err:
+            print("Login failed:", err.resp.error["msg"])
+            #exit(1)
+        ts3conn.use(sid=1)
+        for client in ts3conn.clientlist():
+            #print(client,client_name)
+            if client["client_nickname"].lower() == client_name.lower():
+                ts3conn.clientkick(reasonid=5, reasonmsg="Franta tě kopl", clid=client["clid"])
+                print("František osobu úspěšně vykopl")
+                break
+        #ts3conn.login(client_login_name="loupo", client_login_password="xzHjtnwP")
+
+
 def app_start():
     mic_input = recognize_speech_from_mic(rec, mic)
-    # apps = ["apex", "šestka", "coso", "stellaris"]
     print(mic_input["transcription"])
-    #input("Press Enter to continue...")
-    # if mic_input["transcription"].lower() == "františku":
-    #    print("František připraven")
-    # time.sleep(10)
-    # pdb.set_trace()
-    # input("Press Enter to continue...")
-    #    mic_query = recognize_speech_from_mic(rec, mic)
     if mic_input["transcription"]:
+        noprogram = 0 #kvůli hláškám
         program = mic_input["transcription"]
-        # print(program)
-        #dir_list = os.listdir("src")
-        #dir_list = glob.glob('src\*')
-        #print(dir_list) #debug
         try:
             if "Františku" in program:
+                noprogram = 0
                 program = program.replace('Františku ', '')
                 program_start(program)
-                # input("Press Enter to continue...")
+            elif "vypni stroj" in program: #testovat -- "František vypne stroj hlásí, že program nenalezen", neodpočítává, pouze hlásí že vypíná za 10 secs
+                noprogram = 1
+                os.system('shutdown -s -t 10')
+                print("Vypínám systém za 10 sekund")
+                abort_cmd = input("Vypínám za 10 sekund, pro zrušení vypnutí použjite command a nebo abort - ")
+                if ["a", "abort"] in abort_cmd:
+                    os.system('shutdown -a')
+                    print("Vypnutí systému zrušeno")
+            elif "Teamspeak query kopni" in program:
+                noprogram = 1
+                client_name = program.replace('Teamspeak query kopni ', '')
+                if "Lukáš" in client_name:
+                    client_name = params.namca
+                if "Tomáš" in client_name:
+                    client_name = params.repak
+                if "Epik" in client_name:
+                    client_name = params.epik
+                ts3kick(client_name)
             else:
+                noprogram = 0
                 program_start(program)
         except:
-            print("Program nenalezen")
+            if noprogram == 0:
+                print("Program nenalezen")
         finally:
             reset = input("František dokončil dotaz, chcete restartovat?")
             if reset in ["y", "yes", "ano"]:
@@ -77,7 +112,7 @@ def app_start():
     else:
         print("error")
 
-start = input("Pro spuštění skriptu stiskni S: ")
-if start in ["S", "s"]:
-    app_start()
+
+start = input("Pro spuštění skriptu stiskni enter")
+app_start()
 
