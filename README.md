@@ -17,7 +17,7 @@
 - František umí vykopávat uživatele z TeamSpeak serveru pomocí jednoduchého příkazu
 - Vypnout PC
 
-##Syntax hlasových příkazů
+## Syntax hlasových příkazů
 
 Pro spuštění programu: *"Františku [jméno zástupce programu]"* <br>
 Pro vykopnutí uživatele z TeamSpeak serveru: *"Františku TeamSpeak query kopni [jméno uživatele TS]"* <br>
