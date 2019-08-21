@@ -1,6 +1,6 @@
 import speech_recognition as sr
 import os
-import subprocess
+#import subprocess #pro práci s cmd
 #import pdb #debug
 #import time
 #import glob #alternativní výpis souborů
@@ -49,18 +49,17 @@ def program_start(program):
 #    legacy
 
 def ts3kick(client_name):
-    with ts3.query.TS3ServerConnection("localhost") as ts3conn:
+    with ts3.query.TS3ServerConnection("localhost") as ts3conn: #serverip do params pro 1.3
         try:
             ts3conn.login(
                         client_login_name="loupo",
-                        client_login_password="xzHjtnwP"
+                        client_login_password="xzHjtnwP" #hodit hesla do samostatného .py a gitignorovat jej ??
             )
         except ts3.query.TS3QueryError as err:
             print("Login failed:", err.resp.error["msg"])
             #exit(1)
         ts3conn.use(sid=1)
         for client in ts3conn.clientlist():
-            #print(client,client_name)
             if client["client_nickname"].lower() == client_name.lower():
                 ts3conn.clientkick(reasonid=5, reasonmsg="Franta tě kopl", clid=client["clid"])
                 print("František osobu úspěšně vykopl")
@@ -79,7 +78,7 @@ def app_start():
                 noprogram = 0
                 program = program.replace('Františku ', '')
                 program_start(program)
-            elif "vypni stroj" in program: #testovat -- "František vypne stroj hlásí, že program nenalezen", neodpočítává, pouze hlásí že vypíná za 10 secs
+            elif "vypni stroj" in program:
                 noprogram = 1
                 os.system('shutdown -s -t 10')
                 print("Vypínám systém za 10 sekund")
@@ -110,7 +109,10 @@ def app_start():
             else:
                 exit(0)
     else:
-        print("error")
+        #print("error")
+        err_msg = input("Chyba - František nebyl schopen rozeznat příkaz, resetovat?") #ošetření proti pádu programuu
+        if err_msg in ["y", "yes", "ano"]:
+            app_start()
 
 
 start = input("Pro spuštění skriptu stiskni enter")
