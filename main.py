@@ -7,6 +7,7 @@ import os #na spouštění programů
 import ts3 #ts3query
 import params #pomocný .py s vars
 import re #regex
+import datetime
 
 rec = sr.Recognizer()
 mic = sr.Microphone()
@@ -91,7 +92,7 @@ def ts3names(client_name):
         name = params.namca
     elif "Tomáš" == client_name:
         name = params.repak
-    elif "Epic" == client_name:
+    elif "epyc" or "epic" == client_name:
         name = params.epik
     elif "Karel" == client_name:
         name = params.karel
@@ -101,6 +102,26 @@ def ts3names(client_name):
     return name
 
 
+def get_date():
+    cur_date = datetime.datetime.today().strftime('%d.%m.%Y')
+    cur_day = datetime.datetime.today().strftime('%w,')
+    if '0' in cur_day:
+        cur_day = cur_day.replace('0', 'Neděle')
+    elif '1' in cur_day:
+        cur_day = cur_day.replace('1', 'Pondělí')
+    elif '2' in cur_day:
+        cur_day = cur_day.replace('2', 'Úterý')
+    elif '3' in cur_day:
+        cur_day = cur_day.replace('3', 'Středa')
+    elif '4' in cur_day:
+        cur_day = cur_day.replace('4', 'Čtvrtek')
+    elif '5' in cur_day:
+        cur_day = cur_day.replace('5', 'Pátek')
+    elif '6' in cur_day:
+        cur_day = cur_day.replace('6', 'Sobota')
+    print('Dnes je', cur_day, cur_date)
+
+
 def app_start():
     mic_input = recognize_speech_from_mic(rec, mic)
     print(mic_input["transcription"])
@@ -108,11 +129,7 @@ def app_start():
         noprogram = 0 #kvůli hláškám
         program = mic_input["transcription"]
         try:
-            if "Františku" in program:
-                noprogram = 0
-                program = frantisek_replace(program)
-                program_start(program)
-            elif "vypni stroj" in program:
+            if "vypni stroj" in program:
                 noprogram = 1
                 os.system('shutdown -s -t 10')
                 print("Vypínám systém za 10 sekund")
@@ -139,11 +156,16 @@ def app_start():
                     ban_duration = 30 #defaultní čas pro bany
                 client_name = ts3names(client_name)
                 ts3ban(client_name, ban_duration)
+            elif "datum" in program:
+                noprogram = 1
+                get_date()
             elif "vypni se" in program:
                 print("František se vypíná...")
                 exit(0)
             else:
                 noprogram = 0
+                if "Františku" in program:
+                    program = frantisek_replace(program)
                 program_start(program)
         except:
             if noprogram == 0:
