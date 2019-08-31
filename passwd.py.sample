@@ -1,0 +1,4 @@
+ts3_login = "serverQueryUsername"
+ts3_pwd = "serverQueryPassword"
+
+# Přihlašovací údaje k ServerQuery lze vygenerovat přímo v klientu TS3, pakliže má uživatel administrátorská práva

@@ -6,6 +6,7 @@ import os #na spouštění programů
 #import glob #alternativní výpis souborů
 import ts3 #ts3query
 import params #pomocný .py s vars
+import passwd #pomocný .py s přihlašovacími údaji
 import re #regex
 import datetime
 
@@ -58,8 +59,8 @@ def frantisek_replace(inp):
 def ts3login(ts3conn):
     try:
         ts3conn.login(
-            client_login_name="loupo",
-            client_login_password="xzHjtnwP"  # hodit hesla do samostatného .py a gitignorovat jej ??
+            client_login_name=passwd.ts3_login,
+            client_login_password=passwd.ts3_pwd
         )
     except ts3.query.TS3QueryError as err:
         print("Login failed:", err.resp.error["msg"])
@@ -132,11 +133,17 @@ def app_start():
             if "vypni stroj" in program:
                 noprogram = 1
                 os.system('shutdown -s -t 10')
-                print("Vypínám systém za 10 sekund")
                 abort_cmd = input("Vypínám za 10 sekund, pro zrušení vypnutí použjite command a nebo abort - ")
                 if abort_cmd in params.dialog_aborts:
                     os.system('shutdown -a')
                     print("Vypnutí systému zrušeno")
+            elif "odhlaš uživatele" in program:
+                noprogram = 1
+                os.system('shutdown -L -t 10')
+                abort_cmd = input("Odhlašuji za 10 sekund, pro zrušení odhlášení použjite command a nebo abort - ")
+                if abort_cmd in params.dialog_aborts:
+                    os.system('shutdown -a')
+                    print("Odhlášení uživatele zrušeno")
             elif "kopni" in program:
                 noprogram = 1
                 client_name = program.replace('kopni ', '')

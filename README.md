@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to Asistent František</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.3-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.4-blue.svg?cacheSeconds=2592000" />
   <a href="https://soosops.eu/licenses/llnmvp.pdf">
     <img alt="License: LL-NMV-P" src="https://img.shields.io/badge/license-LL--NMV--P-green" />
   </a>
@@ -16,14 +16,18 @@
 - František umí zapínat programy, ke kterým má přístup pomocí zástupců umístěných ve složce src
 - František umí vykopávat uživatele z TeamSpeak serveru pomocí jednoduchého příkazu
 - František umí banovat uživatele z TeamSpeak serveru pomocí jednoduchého příkazu
-- František umí vypnout PC
+- František umí vypnout PC a odhlásit uživatele
+- František umí zobrazit aktuální datum a den týdne
 
 ## Syntax hlasových příkazů
 
 Pro spuštění programu: *"Františku [jméno zástupce programu]"* <br>
 Pro vykopnutí uživatele z TeamSpeak serveru: *"Františku kopni [jméno uživatele TS]"* <br>
 Pro zabanování uživatele z TeamSpeak serveru: *"Františku zlikviduj [jméno uživatele TS] [délka banu v sekundách]"* - (pokud není definována délka banu, automaticky je ban udělen na 30 sekund) <br>
-Pro vypnutí počítače: *"Františku vypni stroj"*
+Pro vypnutí počítače: *"Františku vypni stroj"* <br>
+Pro odhlášení uživatele: *"Františku odhlaš uživatele"* <br>
+Pro zobrazení data: *"Františku datum"*
+
 
 ## TeamSpeak query
 
