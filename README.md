@@ -8,6 +8,7 @@
 </p>
 
 > František je osobní asistent provádějící úlohy na základě hlasových příkazů uživatele. <br>
+> Latest version: 1.4 (final)
 
 ## Funkce
 
@@ -57,7 +58,7 @@ Testováno pouze na systému Windows
 ## 📝 License
 
 Copyright © 2019 [Loupeznik](https://github.com/Loupeznik).<br />
-This project is [LL-NMV-P](https://soosops.eu/licenses/llnmvp.pdf) licensed.
+This project is [MIT](https://github.com/Loupeznik/AsistentFrantisek/blob/master/LICENSE) licensed.
 
 ***
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
